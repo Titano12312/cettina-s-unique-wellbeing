@@ -19,7 +19,7 @@ const services = [
 
 export function Servizi() {
   return (
-    <section id="servizi" className="relative overflow-hidden bg-background py-24 md:py-32 lg:py-44">
+    <section id="servizi" className="cv-auto relative overflow-hidden bg-background py-24 md:py-32 lg:py-44">
       <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_30%_20%,color-mix(in_oklab,var(--teal-sci)_12%,transparent),transparent_60%),radial-gradient(circle_at_80%_80%,color-mix(in_oklab,var(--gold)_8%,transparent),transparent_55%)]" />
 
       <div className="mx-auto max-w-7xl px-6 lg:px-12">

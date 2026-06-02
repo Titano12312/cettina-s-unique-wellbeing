@@ -3,7 +3,7 @@ import { Phone, MessageCircle, MapPin, Building2, Clock } from "lucide-react";
 
 export function Contatti() {
   return (
-    <section id="contatti" className="relative overflow-hidden bg-background py-24 md:py-32 lg:py-44">
+    <section id="contatti" className="cv-auto relative overflow-hidden bg-background py-24 md:py-32 lg:py-44">
       <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_70%_30%,color-mix(in_oklab,var(--teal-sci)_14%,transparent),transparent_55%)]" />
 
       <div className="mx-auto max-w-7xl px-6 lg:px-12">
