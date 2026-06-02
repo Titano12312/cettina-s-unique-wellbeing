@@ -69,7 +69,6 @@ export function Hero() {
       </div>
 
 
-
       {/* Content */}
       <div className="relative mx-auto flex min-h-screen max-w-7xl flex-col justify-center px-6 pt-28 pb-20 sm:pt-32 sm:pb-24 lg:px-12">
         <motion.div
