@@ -1,16 +1,23 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import { TanStackRouterVite } from "@tanstack/router-plugin"; // Lettere MAIUSCOLE qui
-import lovablePkg from "@lovable.dev/vite-tanstack-config";
 import tsconfigPaths from "vite-tsconfig-paths";
+import * as tanstackPlugin from "@tanstack/router-plugin";
+import lovablePkg from "@lovable.dev/vite-tanstack-config";
 
-// Estraiamo la configurazione corretta dal pacchetto CommonJS di Lovable
+// Troviamo la funzione di TanStack ovunque sia nascosta nell'export
+const tanstackRouterVite = 
+  tanstackPlugin.tanstackRouterVite || 
+  tanstackPlugin.TanStackRouterVite || 
+  (tanstackPlugin.default && (tanstackPlugin.default.tanstackRouterVite || tanstackPlugin.default.TanStackRouterVite)) ||
+  tanstackPlugin.default;
+
+// Estraiamo la configurazione corretta dal pacchetto di Lovable
 const lovableViteConfig = lovablePkg.lovableViteConfig || lovablePkg;
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
   plugins: [
-    TanStackRouterVite(), // Aggiornato anche qui con le maiuscole
+    typeof tanstackRouterVite === "function" ? tanstackRouterVite() : [],
     react(),
     tsconfigPaths(),
     mode === "development" 
