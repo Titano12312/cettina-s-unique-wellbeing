@@ -24,7 +24,7 @@ export function Unicita() {
     >
 
       {/* particle field */}
-      <DnaHelix variant="field" density={80} className="absolute inset-0 h-full w-full opacity-50" />
+      <DnaHelix variant="field" density={32} className="absolute inset-0 h-full w-full opacity-50" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,oklch(0.39_0.06_180/0.6))]" />
 
       <div className="relative mx-auto grid max-w-7xl gap-12 px-6 lg:grid-cols-12 lg:gap-16 lg:px-12">
@@ -75,7 +75,7 @@ export function Unicita() {
             <div className="absolute inset-8 rounded-full border border-ivory/8 animate-spin-slow" style={{ animationDirection: "reverse", animationDuration: "60s" }} />
             <div className="absolute inset-16 rounded-full border border-gold/20" />
 
-            <DnaHelix className="absolute inset-0 h-full w-full" density={48} speed={0.4} />
+            <DnaHelix className="absolute inset-0 h-full w-full" density={28} />
 
             <div className="absolute inset-0 -z-10 rounded-full bg-teal-sci/30 blur-3xl" />
 

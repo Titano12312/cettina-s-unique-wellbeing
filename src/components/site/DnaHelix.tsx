@@ -1,49 +1,32 @@
-import { useEffect, useRef } from "react";
+import { memo, useMemo } from "react";
 
 interface DnaHelixProps {
   className?: string;
   density?: number;
   speed?: number;
-  /** Visual mode: full helix sculpture, or particle field */
   variant?: "helix" | "field";
 }
 
 /**
- * Animated SVG DNA-inspired helix. Pure CSS/SVG, no WebGL — fast & elegant.
- * Two intertwined sine waves with rungs that fade based on depth.
+ * Animated SVG DNA-inspired helix.
+ * Pure SVG + CSS animations (no rAF, no per-element filters) for max perf.
  */
-export function DnaHelix({ className, density = 38, speed = 1, variant = "helix" }: DnaHelixProps) {
-  const ref = useRef<SVGSVGElement>(null);
-  const tRef = useRef(0);
-
-  useEffect(() => {
-    let raf = 0;
-    let last = performance.now();
-    const tick = (now: number) => {
-      const dt = (now - last) / 1000;
-      last = now;
-      tRef.current += dt * speed;
-      const svg = ref.current;
-      if (svg) {
-        const t = tRef.current;
-        svg.style.setProperty("--t", String(t));
-      }
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [speed]);
-
+function DnaHelixBase({ className, density = 28, variant = "helix" }: DnaHelixProps) {
   if (variant === "field") {
-    // particle field
-    const points = Array.from({ length: density }, (_, i) => {
-      const x = (i * 53) % 100;
-      const y = (i * 37) % 100;
-      const r = 0.6 + ((i * 13) % 10) / 10;
-      return { x, y, r, i };
-    });
+    const points = useMemo(() => {
+      const cap = Math.min(density, 36);
+      return Array.from({ length: cap }, (_, i) => ({
+        x: (i * 53) % 100,
+        y: (i * 37) % 100,
+        r: 0.6 + ((i * 13) % 10) / 10,
+        d: (i % 7) * 0.3,
+        s: 4 + (i % 5),
+        i,
+      }));
+    }, [density]);
+
     return (
-      <svg ref={ref} className={className} viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+      <svg className={className} viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
         <defs>
           <radialGradient id="dot-g" cx="50%" cy="50%" r="50%">
             <stop offset="0%" stopColor="var(--teal-sci)" stopOpacity="0.9" />
@@ -58,8 +41,8 @@ export function DnaHelix({ className, density = 38, speed = 1, variant = "helix"
             r={p.r}
             fill="url(#dot-g)"
             style={{
-              transformOrigin: `${p.x}px ${p.y}px`,
-              animation: `float-y ${4 + (p.i % 5)}s var(--ease-lux) ${(p.i % 7) * 0.3}s infinite`,
+              animation: `float-y ${p.s}s var(--ease-lux) ${p.d}s infinite`,
+              willChange: "transform",
             }}
           />
         ))}
@@ -67,17 +50,36 @@ export function DnaHelix({ className, density = 38, speed = 1, variant = "helix"
     );
   }
 
-  // helix
-  const rungs = Array.from({ length: density }, (_, i) => i);
+  // helix - precompute paths/rungs (memoized; no rAF)
+  const cap = Math.min(density, 32);
+  const { rungs, pathA, pathB } = useMemo(() => {
+    const rungs = [] as { y: number; ax: number; bx: number; op: number; r: number }[];
+    for (let i = 0; i < cap; i++) {
+      const yT = i / (cap - 1);
+      const y = yT * 760 + 20;
+      const phase = yT * Math.PI * 6;
+      const ax = 200 + Math.sin(phase) * 110;
+      const bx = 200 + Math.sin(phase + Math.PI) * 110;
+      const depth = (Math.cos(phase) + 1) / 2;
+      rungs.push({ y, ax, bx, op: 0.25 + depth * 0.75, r: 3 + depth * 2.5 });
+    }
+    const steps = 80;
+    const a: string[] = [];
+    const b: string[] = [];
+    for (let i = 0; i <= steps; i++) {
+      const yT = i / steps;
+      const y = yT * 760 + 20;
+      const phase = yT * Math.PI * 6;
+      const ax = 200 + Math.sin(phase) * 110;
+      const bx = 200 + Math.sin(phase + Math.PI) * 110;
+      a.push(`${i === 0 ? "M" : "L"}${ax.toFixed(2)},${y.toFixed(2)}`);
+      b.push(`${i === 0 ? "M" : "L"}${bx.toFixed(2)},${y.toFixed(2)}`);
+    }
+    return { rungs, pathA: a.join(" "), pathB: b.join(" ") };
+  }, [cap]);
 
   return (
-    <svg
-      ref={ref}
-      className={className}
-      viewBox="0 0 400 800"
-      fill="none"
-      aria-hidden
-    >
+    <svg className={className} viewBox="0 0 400 800" fill="none" aria-hidden>
       <defs>
         <linearGradient id="strand-a" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor="var(--teal-sci)" />
@@ -92,51 +94,24 @@ export function DnaHelix({ className, density = 38, speed = 1, variant = "helix"
           <stop offset="60%" stopColor="var(--teal-sci)" stopOpacity="0.9" />
           <stop offset="100%" stopColor="var(--teal-sci)" stopOpacity="0" />
         </radialGradient>
-        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="3" />
-        </filter>
       </defs>
 
-      <g className="animate-helix-drift" style={{ transformOrigin: "200px 400px" }}>
-        {rungs.map((i) => {
-          const yT = i / (density - 1);
-          const y = yT * 760 + 20;
-          const phase = yT * Math.PI * 6;
-          const ax = 200 + Math.sin(phase) * 110;
-          const bx = 200 + Math.sin(phase + Math.PI) * 110;
-          const depth = (Math.cos(phase) + 1) / 2; // 0..1
-          const op = 0.25 + depth * 0.75;
-          return (
-            <g key={i} style={{ opacity: op }}>
-              <line x1={ax} y1={y} x2={bx} y2={y} stroke="var(--emerald-deep)" strokeOpacity="0.25" strokeWidth="1" />
-              <circle cx={ax} cy={y} r={3 + depth * 2.5} fill="url(#bead)" filter="url(#glow)" />
-              <circle cx={bx} cy={y} r={3 + depth * 2.5} fill="url(#bead)" filter="url(#glow)" />
-            </g>
-          );
-        })}
-
-        {/* continuous strands */}
-        {(() => {
-          const steps = 200;
-          const pathA: string[] = [];
-          const pathB: string[] = [];
-          for (let i = 0; i <= steps; i++) {
-            const yT = i / steps;
-            const y = yT * 760 + 20;
-            const phase = yT * Math.PI * 6;
-            const ax = 200 + Math.sin(phase) * 110;
-            const bx = 200 + Math.sin(phase + Math.PI) * 110;
-            pathA.push(`${i === 0 ? "M" : "L"}${ax.toFixed(2)},${y.toFixed(2)}`);
-            pathB.push(`${i === 0 ? "M" : "L"}${bx.toFixed(2)},${y.toFixed(2)}`);
-          }
-          return (
-            <>
-              <path d={pathA.join(" ")} stroke="url(#strand-a)" strokeWidth="2.5" strokeLinecap="round" />
-              <path d={pathB.join(" ")} stroke="url(#strand-b)" strokeWidth="2.5" strokeLinecap="round" />
-            </>
-          );
-        })()}
+      <g
+        className="animate-helix-drift"
+        style={{ transformOrigin: "200px 400px", willChange: "transform" }}
+      >
+        {rungs.map((r, i) => (
+          <g key={i} style={{ opacity: r.op }}>
+            <line x1={r.ax} y1={r.y} x2={r.bx} y2={r.y} stroke="var(--emerald-deep)" strokeOpacity="0.25" strokeWidth="1" />
+            <circle cx={r.ax} cy={r.y} r={r.r} fill="url(#bead)" />
+            <circle cx={r.bx} cy={r.y} r={r.r} fill="url(#bead)" />
+          </g>
+        ))}
+        <path d={pathA} stroke="url(#strand-a)" strokeWidth="2.5" strokeLinecap="round" />
+        <path d={pathB} stroke="url(#strand-b)" strokeWidth="2.5" strokeLinecap="round" />
       </g>
     </svg>
   );
 }
+
+export const DnaHelix = memo(DnaHelixBase);

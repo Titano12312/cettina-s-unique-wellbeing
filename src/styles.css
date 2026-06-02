@@ -138,6 +138,20 @@
     backdrop-filter: blur(24px) saturate(140%);
     border: 1px solid color-mix(in oklab, var(--teal-sci) 25%, transparent);
   }
+
+  /* Mobile: reduce backdrop blur cost dramatically */
+  @media (max-width: 767px) {
+    .glass {
+      backdrop-filter: blur(10px) saturate(130%);
+      -webkit-backdrop-filter: blur(10px) saturate(130%);
+      background: color-mix(in oklab, white 80%, transparent);
+    }
+    .glass-dark {
+      backdrop-filter: blur(12px) saturate(130%);
+      -webkit-backdrop-filter: blur(12px) saturate(130%);
+    }
+  }
+
   .shadow-soft { box-shadow: var(--shadow-soft); }
   .shadow-lux { box-shadow: var(--shadow-lux); }
   .shadow-glow { box-shadow: var(--shadow-glow); }
@@ -179,4 +193,17 @@
   .animate-float-y { animation: float-y 6s var(--ease-lux) infinite; }
   .animate-spin-slow { animation: spin-slow 40s linear infinite; }
   .animate-helix-drift { animation: helix-drift 9s var(--ease-lux) infinite; }
+
+  /* Defer offscreen rendering for heavy sections */
+  .cv-auto { content-visibility: auto; contain-intrinsic-size: 1px 800px; }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+

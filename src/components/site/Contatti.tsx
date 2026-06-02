@@ -3,7 +3,7 @@ import { Phone, MessageCircle, MapPin, Building2, Clock } from "lucide-react";
 
 export function Contatti() {
   return (
-    <section id="contatti" className="relative overflow-hidden bg-background py-24 md:py-32 lg:py-44">
+    <section id="contatti" className="cv-auto relative overflow-hidden bg-background py-24 md:py-32 lg:py-44">
       <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_70%_30%,color-mix(in_oklab,var(--teal-sci)_14%,transparent),transparent_55%)]" />
 
       <div className="mx-auto max-w-7xl px-6 lg:px-12">
@@ -81,10 +81,12 @@ export function Contatti() {
             <div className="relative h-full min-h-[380px] sm:min-h-[480px] overflow-hidden rounded-[28px] sm:rounded-[36px] border border-border shadow-lux">
               <iframe
                 title="Mappa Studio - Via Mariano Stabile 136, Palermo"
-                src="https://www.openstreetmap.org/export/embed.html?bbox=13.357%2C38.122%2C13.367%2C38.128&layer=mapnik&marker=38.125%2C13.362"
-                className="absolute inset-0 h-full w-full grayscale-[15%] saturate-[1.1]"
+                src="https://www.google.com/maps?q=Via+Mariano+Stabile+136,+90139+Palermo&z=16&output=embed"
+                className="absolute inset-0 h-full w-full"
                 loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
               />
+
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-emerald-deep/40 via-transparent to-transparent" />
 
               {/* floating card */}

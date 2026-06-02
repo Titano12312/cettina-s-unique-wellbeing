@@ -27,7 +27,7 @@ export function ChiSono() {
             <div className="relative mx-auto aspect-[4/5] w-[88%] max-w-md">
               <div className="absolute inset-0 rounded-[36px] bg-emerald-gradient shadow-lux" />
               <div className="absolute inset-0 rounded-[36px] overflow-hidden">
-                <DnaHelix className="absolute -right-10 top-0 h-full w-[80%] opacity-90" density={36} speed={0.5} />
+                <DnaHelix className="absolute -right-10 top-0 h-full w-[80%] opacity-90" density={24} />
                 <div className="absolute inset-0 bg-gradient-to-tr from-emerald-deep/80 via-transparent to-transparent" />
               </div>
               <div className="absolute inset-4 rounded-[28px] border border-ivory/20" />

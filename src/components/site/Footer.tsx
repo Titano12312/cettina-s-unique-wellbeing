@@ -3,10 +3,11 @@ import { DnaHelix } from "./DnaHelix";
 
 export function Footer() {
   return (
-    <footer className="relative overflow-hidden bg-[oklch(0.18_0.02_200)] text-ivory">
+    <footer className="cv-auto relative overflow-hidden bg-[oklch(0.18_0.02_200)] text-ivory">
       <div className="pointer-events-none absolute inset-0 opacity-30">
-        <DnaHelix variant="field" density={100} className="h-full w-full" />
+        <DnaHelix variant="field" density={28} className="h-full w-full" />
       </div>
+
       <div className="pointer-events-none absolute -left-32 -top-20 h-[420px] w-[420px] rounded-full bg-teal-sci/20 blur-3xl" />
       <div className="pointer-events-none absolute -right-32 bottom-0 h-[420px] w-[420px] rounded-full bg-dna-blue/15 blur-3xl" />
 
