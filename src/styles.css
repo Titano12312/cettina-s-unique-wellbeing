@@ -179,4 +179,17 @@
   .animate-float-y { animation: float-y 6s var(--ease-lux) infinite; }
   .animate-spin-slow { animation: spin-slow 40s linear infinite; }
   .animate-helix-drift { animation: helix-drift 9s var(--ease-lux) infinite; }
+
+  /* Defer offscreen rendering for heavy sections */
+  .cv-auto { content-visibility: auto; contain-intrinsic-size: 1px 800px; }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+

@@ -11,20 +11,34 @@ export function Hero() {
   useEffect(() => {
     const el = wrapRef.current;
     if (!el) return;
-    const onMove = (e: MouseEvent) => {
-      const rect = el.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width - 0.5;
-      const y = (e.clientY - rect.top) / rect.height - 0.5;
+    // Skip parallax on touch / coarse pointers + reduced-motion
+    if (window.matchMedia("(hover: none), (prefers-reduced-motion: reduce)").matches) return;
+
+    let raf = 0;
+    let x = 0;
+    let y = 0;
+    const apply = () => {
+      raf = 0;
       if (helixRef.current) {
-        helixRef.current.style.transform = `translate3d(${x * -30}px, ${y * -20}px, 0) rotateY(${x * 8}deg) rotateX(${y * -6}deg)`;
+        helixRef.current.style.transform = `translate3d(${x * -30}px, ${y * -20}px, 0)`;
       }
       if (orbRef.current) {
         orbRef.current.style.transform = `translate3d(${x * 40}px, ${y * 30}px, 0)`;
       }
     };
-    el.addEventListener("mousemove", onMove);
-    return () => el.removeEventListener("mousemove", onMove);
+    const onMove = (e: MouseEvent) => {
+      const rect = el.getBoundingClientRect();
+      x = (e.clientX - rect.left) / rect.width - 0.5;
+      y = (e.clientY - rect.top) / rect.height - 0.5;
+      if (!raf) raf = requestAnimationFrame(apply);
+    };
+    el.addEventListener("mousemove", onMove, { passive: true });
+    return () => {
+      el.removeEventListener("mousemove", onMove);
+      if (raf) cancelAnimationFrame(raf);
+    };
   }, []);
+
 
   return (
     <section
@@ -40,12 +54,20 @@ export function Hero() {
         <div className="absolute bottom-0 left-1/3 h-[380px] w-[380px] rounded-full bg-gold/15 blur-3xl" />
       </div>
 
-      {/* Helix */}
+      {/* Helix - desktop only (heavy decorative) */}
       <div
         ref={helixRef}
         className="pointer-events-none absolute right-[-6%] top-1/2 hidden h-[90vh] w-[55vw] -translate-y-1/2 transition-transform duration-300 ease-out md:block"
-        style={{ transformStyle: "preserve-3d" }}
       >
+        <DnaHelix className="h-full w-full" density={28} />
+        <div className="absolute inset-0 -z-10 rounded-full bg-teal-sci/20 blur-[120px]" />
+      </div>
+
+      {/* Mobile: lightweight static blur orb only — no SVG helix */}
+      <div className="pointer-events-none absolute inset-0 flex items-center justify-center md:hidden">
+        <div className="h-[60vh] w-[60vh] rounded-full bg-teal-sci/25 blur-3xl" />
+      </div>
+
         <DnaHelix className="h-full w-full" density={42} speed={0.6} />
         <div className="absolute inset-0 -z-10 rounded-full bg-teal-sci/20 blur-[120px]" />
       </div>
