@@ -3,7 +3,6 @@ import react from "@vitejs/plugin-react";
 import tsconfigPaths from "vite-tsconfig-paths";
 import * as tanstackPlugin from "@tanstack/router-plugin";
 
-// Troviamo la funzione di TanStack ovunque sia nascosta nell'export
 const tanstackRouterVite = 
   tanstackPlugin.tanstackRouterVite || 
   tanstackPlugin.TanStackRouterVite || 
@@ -22,9 +21,12 @@ export default defineConfig({
       "@": "/src",
     },
   },
-  // Forziamo il comportamento corretto per le Single Page Application (SPA) su Cloudflare
   build: {
-    outDir: "dist/client",
+    outDir: "dist",
     emptyOutDir: true,
-  }
+    rollupOptions: {
+      // Diciamo a Rollup di usare il file TypeScript principale invece di cercare index.html nella root
+      input: "src/main.tsx",
+    },
+  },
 });
