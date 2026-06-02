@@ -30,7 +30,7 @@ export function Testimonianze() {
   const r = reviews[i];
 
   return (
-    <section className="relative overflow-hidden bg-ivory py-32 lg:py-44">
+    <section className="relative overflow-hidden bg-ivory py-24 md:py-32 lg:py-44">
       <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_30%_50%,color-mix(in_oklab,var(--dna-blue)_10%,transparent),transparent_55%)]" />
 
       <div className="mx-auto max-w-5xl px-6 text-center lg:px-12">
