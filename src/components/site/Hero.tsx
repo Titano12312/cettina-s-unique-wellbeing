@@ -68,14 +68,7 @@ export function Hero() {
         <div className="h-[60vh] w-[60vh] rounded-full bg-teal-sci/25 blur-3xl" />
       </div>
 
-        <DnaHelix className="h-full w-full" density={42} speed={0.6} />
-        <div className="absolute inset-0 -z-10 rounded-full bg-teal-sci/20 blur-[120px]" />
-      </div>
 
-      {/* Mobile helix - centered behind */}
-      <div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-30 md:hidden">
-        <DnaHelix className="h-[80vh] w-[80vw]" density={28} speed={0.6} />
-      </div>
 
       {/* Content */}
       <div className="relative mx-auto flex min-h-screen max-w-7xl flex-col justify-center px-6 pt-28 pb-20 sm:pt-32 sm:pb-24 lg:px-12">
