@@ -20,8 +20,9 @@ export function Unicita() {
     <section
       id="unicita"
       ref={ref}
-      className="relative overflow-hidden bg-emerald-gradient py-32 text-ivory lg:py-44"
+      className="relative overflow-hidden bg-emerald-gradient py-24 text-ivory md:py-32 lg:py-44"
     >
+
       {/* particle field */}
       <DnaHelix variant="field" density={80} className="absolute inset-0 h-full w-full opacity-50" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,oklch(0.39_0.06_180/0.6))]" />
@@ -86,7 +87,7 @@ export function Unicita() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.3 + i * 0.12 }}
-                className="absolute"
+                className="absolute hidden md:block"
                 style={{ top: h.top, left: h.left }}
               >
                 <div className="group relative">
@@ -99,6 +100,7 @@ export function Unicita() {
                 </div>
               </motion.div>
             ))}
+
           </motion.div>
         </div>
       </div>

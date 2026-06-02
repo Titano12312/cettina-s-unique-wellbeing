@@ -10,7 +10,7 @@ const principles = [
 
 export function ChiSono() {
   return (
-    <section id="chi-sono" className="relative overflow-hidden py-32 lg:py-44">
+    <section id="chi-sono" className="relative overflow-hidden py-24 md:py-32 lg:py-44">
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-ivory to-background" />
       <div className="pointer-events-none absolute -left-32 top-20 h-[400px] w-[400px] rounded-full bg-teal-sci/10 blur-3xl" />
 
@@ -24,7 +24,7 @@ export function ChiSono() {
             transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
             className="lg:col-span-5"
           >
-            <div className="relative mx-auto aspect-[4/5] max-w-md">
+            <div className="relative mx-auto aspect-[4/5] w-[88%] max-w-md">
               <div className="absolute inset-0 rounded-[36px] bg-emerald-gradient shadow-lux" />
               <div className="absolute inset-0 rounded-[36px] overflow-hidden">
                 <DnaHelix className="absolute -right-10 top-0 h-full w-[80%] opacity-90" density={36} speed={0.5} />
@@ -33,9 +33,9 @@ export function ChiSono() {
               <div className="absolute inset-4 rounded-[28px] border border-ivory/20" />
 
               {/* Floating signature card */}
-              <div className="absolute -bottom-8 -left-8 w-[78%] rounded-2xl glass p-5 shadow-lux animate-float-y">
+              <div className="absolute -bottom-6 left-2 right-8 sm:-left-8 sm:right-auto sm:w-[78%] rounded-2xl glass p-4 sm:p-5 shadow-lux animate-float-y">
                 <div className="text-[10px] uppercase tracking-[0.28em] text-muted-foreground">Studio</div>
-                <div className="mt-1 font-display text-xl text-emerald-deep">Dott.ssa Cettina<br />Siracusa</div>
+                <div className="mt-1 font-display text-lg sm:text-xl text-emerald-deep">Dott.ssa Cettina<br />Siracusa</div>
                 <div className="mt-3 flex items-center gap-3 text-xs text-muted-foreground">
                   <span className="h-px w-8 bg-gold" />
                   Biologa Nutrizionista
@@ -46,6 +46,7 @@ export function ChiSono() {
               <div className="absolute -top-4 -right-4 h-20 w-20 rounded-full bg-gold-gradient opacity-90 blur-sm" />
               <div className="absolute -top-3 -right-3 h-16 w-16 rounded-full border border-gold/60" />
             </div>
+
           </motion.div>
 
           {/* Copy */}
