@@ -1,0 +1,27 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": ".output/server/index.mjs",
+      "use": "@vercel/node"
+    },
+    {
+      "src": ".output/public/**",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/_vercel/inspections",
+      "dest": "/_vercel/inspections"
+    },
+    {
+      "src": "/assets/(.*)",
+      "dest": ".output/public/assets/$1"
+    },
+    {
+      "src": "(.*)",
+      "dest": ".output/server/index.mjs"
+    }
+  ]
+}
