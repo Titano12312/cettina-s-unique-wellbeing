@@ -12,4 +12,8 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  // Sovrascriviamo il target di default di Lovable per forzare il build su Vercel
+  nitro: {
+    preset: "vercel"
+  }
 });
