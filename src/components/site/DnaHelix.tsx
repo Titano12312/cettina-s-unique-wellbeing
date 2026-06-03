@@ -53,15 +53,16 @@ function DnaHelixBase({ className, density = 28, variant = "helix" }: DnaHelixPr
   // helix - precompute paths/rungs (memoized; no rAF)
   const cap = Math.min(density, 32);
   const { rungs, pathA, pathB } = useMemo(() => {
+    const round = (n: number) => Math.round(n * 100) / 100;
     const rungs = [] as { y: number; ax: number; bx: number; op: number; r: number }[];
     for (let i = 0; i < cap; i++) {
       const yT = i / (cap - 1);
-      const y = yT * 760 + 20;
+      const y = round(yT * 760 + 20);
       const phase = yT * Math.PI * 6;
-      const ax = 200 + Math.sin(phase) * 110;
-      const bx = 200 + Math.sin(phase + Math.PI) * 110;
+      const ax = round(200 + Math.sin(phase) * 110);
+      const bx = round(200 + Math.sin(phase + Math.PI) * 110);
       const depth = (Math.cos(phase) + 1) / 2;
-      rungs.push({ y, ax, bx, op: 0.25 + depth * 0.75, r: 3 + depth * 2.5 });
+      rungs.push({ y, ax, bx, op: round(0.25 + depth * 0.75), r: round(3 + depth * 2.5) });
     }
     const steps = 80;
     const a: string[] = [];
