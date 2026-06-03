@@ -12,9 +12,9 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
-  // Force-enable Nitro deploy plugin with the Vercel preset so
-  // `bun run build` emits output ready for Vercel.
+  // Force-enable Nitro deploy plugin with the Cloudflare Pages preset so
+  // `bun run build` emits a `.output/` directory ready for Cloudflare Pages.
   nitro: {
-    preset: "vercel",
+    preset: "cloudflare-pages",
   },
 });
